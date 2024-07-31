@@ -59,7 +59,8 @@
     const shapeTypes = [
       '4区切り', '8区切り', 'くりぬき', '枠のみ四角', '2角丸四角', '2角丸中図形',
       'グラデーション', 'なめらか四角', 'ひし形', '円形', '回転区切り', 'パソコン回転',
-      '同心円', '三角形連なり', '六角形', '星形', 'ギザギザ', '螺旋', '対角線模様'
+      '同心円', '三角形連なり', '六角形', '星形', '対角線模様', 'ノートパソコン', 'ノートパソコン枠',
+      '八角形', '十字', '二重四角', '波形', 'ピラミッド', 'クローバー'
     ];
 
     function getRandomElement(arr) {
@@ -94,6 +95,7 @@
           break;
         case '枠のみ四角':
           ctx.strokeRect(x, y, size, size);
+          ctx.fillRect(x + size / 4, y + size / 4, size / 2, size / 2);
           break;
         case '2角丸四角':
           ctx.beginPath();
@@ -221,34 +223,65 @@
           ctx.closePath();
           ctx.fill();
           break;
-        case 'ギザギザ':
+        case '対角線模様':
+          ctx.fillRect(x, y, size, size);
+          ctx.clearRect(x, y, size, size / 2);
+          ctx.clearRect(x + size / 2, y + size / 2, size / 2, size / 2);
+          break;
+        case 'ノートパソコン':
+          ctx.fillRect(x, y + size / 2, size, size / 2);
+          ctx.fillRect(x + size / 4, y, size / 2, size / 2);
+          break;
+        case 'ノートパソコン枠':
+          ctx.strokeRect(x, y + size / 2, size, size / 2);
+          ctx.strokeRect(x + size / 4, y, size / 2, size / 2);
+          ctx.fillRect(x + size / 3, y + size / 3, size / 3, size / 3);
+          break;
+        case '八角形':
           ctx.beginPath();
-          ctx.moveTo(x, y);
-          for (let i = 0; i < 5; i++) {
-            ctx.lineTo(x + (i + 0.5) * size / 5, y + (i % 2 === 0 ? size / 2 : 0));
-          }
+          ctx.moveTo(x + size / 3, y);
+          ctx.lineTo(x + 2 * size / 3, y);
+          ctx.lineTo(x + size, y + size / 3);
+          ctx.lineTo(x + size, y + 2 * size / 3);
+          ctx.lineTo(x + 2 * size / 3, y + size);
+          ctx.lineTo(x + size / 3, y + size);
+          ctx.lineTo(x, y + 2 * size / 3);
+          ctx.lineTo(x, y + size / 3);
+          ctx.closePath();
+          ctx.fill();
+          break;
+        case '十字':
+          ctx.fillRect(x + size / 3, y, size / 3, size);
+          ctx.fillRect(x, y + size / 3, size, size / 3);
+          break;
+        case '二重四角':
+          ctx.fillRect(x, y, size, size);
+          ctx.clearRect(x + size / 4, y + size / 4, size / 2, size / 2);
+          ctx.fillRect(x + size / 3, y + size / 3, size / 3, size / 3);
+          break;
+        case '波形':
+          ctx.beginPath();
+          ctx.moveTo(x, y + size / 2);
+          ctx.bezierCurveTo(x + size / 4, y, x + 3 * size / 4, y + size, x + size, y + size / 2);
           ctx.lineTo(x + size, y + size);
           ctx.lineTo(x, y + size);
           ctx.closePath();
           ctx.fill();
           break;
-        case '螺旋':
-          ctx.save();
-          ctx.translate(x + size / 2, y + size / 2);
+        case 'ピラミッド':
           ctx.beginPath();
-          for (let i = 0; i < 720; i++) {
-            const angle = 0.1 * i;
-            const spiralX = (1 + angle) * Math.cos(angle);
-            const spiralY = (1 + angle) * Math.sin(angle);
-            ctx.lineTo(spiralX, spiralY);
-          }
-          ctx.stroke();
-          ctx.restore();
+          ctx.moveTo(x + size / 2, y);
+          ctx.lineTo(x + size, y + size);
+          ctx.lineTo(x, y + size);
+          ctx.closePath();
+          ctx.fill();
           break;
-        case '対角線模様':
-          ctx.fillRect(x, y, size, size);
-          ctx.clearRect(x, y, size, size / 2);
-          ctx.clearRect(x + size / 2, y + size / 2, size / 2, size / 2);
+        case 'クローバー':
+          ctx.beginPath();
+          for (let i = 0; i < 4; i++) {
+            ctx.arc(x + size / 2 * Math.cos(Math.PI / 2 * i), y + size / 2 * Math.sin(Math.PI / 2 * i), size / 4, 0, Math.PI * 2);
+          }
+          ctx.fill();
           break;
       }
 
