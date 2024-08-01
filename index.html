@@ -60,7 +60,7 @@
       '4区切り', '8区切り', 'くりぬき', '枠のみ四角', '2角丸四角', '2角丸中図形',
       'グラデーション', 'なめらか四角', 'ひし形', '円形', '回転区切り', 'パソコン回転',
       '同心円', '三角形連なり', '六角形', '星形', '対角線模様', 'ノートパソコン', 'ノートパソコン枠',
-      '八角形', '十字', '二重四角', '波形', 'ピラミッド', 'クローバー'
+      '八角形', '二重四角', '斜めストライプ', '縦ストライプ', '横ストライプ', '菱形パターン'
     ];
 
     function getRandomElement(arr) {
@@ -250,38 +250,38 @@
           ctx.closePath();
           ctx.fill();
           break;
-        case '十字':
-          ctx.fillRect(x + size / 3, y, size / 3, size);
-          ctx.fillRect(x, y + size / 3, size, size / 3);
-          break;
         case '二重四角':
           ctx.fillRect(x, y, size, size);
           ctx.clearRect(x + size / 4, y + size / 4, size / 2, size / 2);
           ctx.fillRect(x + size / 3, y + size / 3, size / 3, size / 3);
           break;
-        case '波形':
-          ctx.beginPath();
-          ctx.moveTo(x, y + size / 2);
-          ctx.bezierCurveTo(x + size / 4, y, x + 3 * size / 4, y + size, x + size, y + size / 2);
-          ctx.lineTo(x + size, y + size);
-          ctx.lineTo(x, y + size);
-          ctx.closePath();
-          ctx.fill();
-          break;
-        case 'ピラミッド':
-          ctx.beginPath();
-          ctx.moveTo(x + size / 2, y);
-          ctx.lineTo(x + size, y + size);
-          ctx.lineTo(x, y + size);
-          ctx.closePath();
-          ctx.fill();
-          break;
-        case 'クローバー':
-          ctx.beginPath();
-          for (let i = 0; i < 4; i++) {
-            ctx.arc(x + size / 2 * Math.cos(Math.PI / 2 * i), y + size / 2 * Math.sin(Math.PI / 2 * i), size / 4, 0, Math.PI * 2);
+        case '斜めストライプ':
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(Math.PI / 4);
+          for (let i = -size; i < size * 2; i += size / 3) {
+            ctx.fillRect(i, -size, size / 3, size * 2);
           }
-          ctx.fill();
+          ctx.restore();
+          break;
+        case '縦ストライプ':
+          for (let i = 0; i < size; i += size / 3) {
+            ctx.fillRect(x + i, y, size / 3, size);
+          }
+          break;
+        case '横ストライプ':
+          for (let i = 0; i < size; i += size / 3) {
+            ctx.fillRect(x, y + i, size, size / 3);
+          }
+          break;
+        case '菱形パターン':
+          ctx.save();
+          ctx.translate(x + size / 2, y + size / 2);
+          for (let i = 0; i < 4; i++) {
+            ctx.rotate(Math.PI / 2);
+            ctx.fillRect(-size / 4, -size / 2, size / 2, size / 2);
+          }
+          ctx.restore();
           break;
       }
 
